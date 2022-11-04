@@ -1,5 +1,5 @@
-# Resonant [![build](https://github.com/aulus-asina/resonant/actions/workflows/build.yml/badge.svg)](https://github.com/aulus-asina/resonant/actions/workflows/build.yml)
-A power worthy of Lord Zenos. Resonant is a Dalamud plugin that draws positional information in the world. 
+# Resonant-API7 [![build](https://github.com/k-kz/Resonant-API7/actions/workflows/build.yml/badge.svg)](https://github.com/k-kz/Resonant-API7/actions/workflows/build.yml)
+Displays accurate player hitbox and positional outlines. Updated for API7 by k-kz.
 
 ![Target positionals with player hitbox](/repo/positionals.png)
 ## Features
@@ -17,10 +17,18 @@ Keep separate profiles for different jobs.
 ## Installation
 Add as a custom repository:
 ```
-https://raw.githubusercontent.com/aulus-asina/resonant/main/repo/latest.json
+https://raw.githubusercontent.com/k-kz/Resonant-API7/main/repo/latest.json
 ```
 
 ## Something doesn't seem right...
-Mechanics such as how conal attacks work and how hitboxes and attack ranges work
+~~Mechanics such as how conal attacks work and how hitboxes and attack ranges work
 have been inferred with trial and error. This plugin might be wrong about some
-game mechanics - if something appears off let me know by opening a GitHub issue.
+game mechanics - if something appears off let me know by opening a GitHub issue.~~
+
+This plugin has been updated by me (k-kz) for API7 - I didn't write it, and _probably_ can't help you. <br>
+That being said, I'm willing to give it a try, so open an issue if anything seems wrong, and I'll see what I can do.
+
+# Thanks
+
+Thanks to [aulus-asina](https://github.com/aulus-asina/) for writing the [original plugin](https://github.com/aulus-asina/resonant). <br>
+Thanks to [Aki](https://github.com/Nik-Potokar/) for putting up with all my shit and endless questions, both here and with the work we do over at [XIVSlothCombo](https://github.com/Nik-Potokar/XIVSlothCombo).
