@@ -17,7 +17,7 @@ Keep separate profiles for different jobs.
 ## Installation
 Add as a custom repository:
 ```
-https://raw.githubusercontent.com/k-kz/Resonant-API7/main/repo/latest.json
+https://raw.githubusercontent.com/k-kz/Dalamudplugins/main/pluginmaster.json
 ```
 
 ## Something doesn't seem right...
