@@ -18,7 +18,7 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <ProduceReferenceAssembly>false</ProduceReferenceAssembly>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
-    <OutputPath>$(AppData)\XIVLauncher\devPlugins\Resonant\</OutputPath>
+    <OutputPath>bin\Release</OutputPath>
   </PropertyGroup>
 
   <PropertyGroup>
