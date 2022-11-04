@@ -1,0 +1,5 @@
+.notes/
+.vs/
+obj/
+bin/
+*.user
