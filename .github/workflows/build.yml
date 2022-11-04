@@ -10,7 +10,7 @@ env:
   PUBLIC_NAME: Resonant-API7
   SOLUTION_NAME: Resonant-API7
   INTERNAL_NAME: Resonant-API7
-  RELEASE_DIR: Plugin\bin\Release\Plugin
+  RELEASE_DIR: Resonant\bin\Release
   PERSONAL_PLUGIN_REPO: k-kz/DalamudPlugins
   PR_PLUGIN_REPO: k-kz/DalamudPlugins 
 
