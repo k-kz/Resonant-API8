@@ -1,22 +1,22 @@
 [
   {
-    "Author": "Aulus mal Asina",
-    "Name": "Resonant",
-    "Description": "Displays accurate player hitbox and positional outlines.",
-    "InternalName": "Resonant",
-    "AssemblyVersion": "0.0.0.6",
-    "TestingAssemblyVersion": "0.0.0.6",
-    "RepoUrl": "https://github.com/aulus-asina/resonant",
+    "Author": "Aulus mal Asina, k-kz",
+    "Name": "Resonant-API7",
+    "Description": "Displays accurate player hitbox and positional outlines. Updated for API7 by k-kz.",
+    "InternalName": "Resonant-API7",
+    "AssemblyVersion": "1.0.0.0",
+    "TestingAssemblyVersion": "1.0.0.0",
+    "RepoUrl": "https://github.com/k-kz/Resonant-API7",
     "ApplicableVersion": "any",
-    "DalamudApiLevel": 5,
+    "DalamudApiLevel": 7,
     "IsHide": "False",
     "IsTestingExclusive": "False",
     "DownloadCount": 0,
     "LastUpdate": 0,
     "LoadPriority": 0,
-    "DownloadLinkInstall": "https://github.com/aulus-asina/resonant/releases/download/0.0.0.6/latest.zip",
-    "DownloadLinkTesting": "https://github.com/aulus-asina/resonant/releases/download/0.0.0.6/latest.zip",
-    "DownloadLinkUpdate": "https://github.com/aulus-asina/resonant/releases/download/0.0.0.6/latest.zip",
-    "IconUrl": "https://raw.githubusercontent.com/aulus-asina/resonant/main/repo/resonant.png"
+    "DownloadLinkInstall": "https://github.com/k-kz/Resonant-API7/releases/download/1.0.0.0/latest.zip",
+    "DownloadLinkTesting": "https://github.com/k-kz/Resonant-API7/releases/download/1.0.0.0/latest.zip",
+    "DownloadLinkUpdate": "https://github.com/k-kz/Resonant-API7/releases/download/1.0.0.0/latest.zip",
+    "IconUrl": "https://raw.githubusercontent.com/k-kz/Resonant-API7/main/repo/resonant.png"
   }
 ]

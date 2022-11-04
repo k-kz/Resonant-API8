@@ -14,10 +14,7 @@ namespace Resonant
             EndRads = endRads;
         }
 
-        internal static Positional FromDegrees(float start, float end)
-        {
-            return new(Maths.Radians(start), Maths.Radians(end));
-        }
+        internal static Positional FromDegrees(float start, float end) => new(Maths.Radians(start), Maths.Radians(end));
     }
 
     internal struct Region
@@ -83,12 +80,9 @@ namespace Resonant
             }
         }
 
-        internal static List<Positional> RearPositionals(ConfigurationProfile.PositionalsSettings c)
-        {
-            return c.RearSeparate
+        internal static List<Positional> RearPositionals(ConfigurationProfile.PositionalsSettings c) => c.RearSeparate
                 ? new List<Positional> { RearLeft, RearRight }
                 : new List<Positional> { Rear };
-        }
 
         internal static List<(Positional, Brush)> FromConfig(ConfigurationProfile.PositionalsSettings c)
         {
@@ -120,15 +114,15 @@ namespace Resonant
     {
         internal static List<(Region Region, Brush Brush)> FromConfig(ConfigurationProfile.PositionalsSettings c, float meleeRange, float abilityRange)
         {
-            var regions = new List<(Region, Brush)>();
+            List<(Region, Brush)>? regions = new();
 
-            foreach (var (positional, brush) in Positionals.FromConfig(c))
+            foreach ((Positional positional, Brush brush) in Positionals.FromConfig(c))
             {
                 regions.Add(new(new Region(positional, 0, meleeRange), brush));
 
                 if (c.MeleeAbilityRange)
                 {
-                    var abBrush = brush with
+                    Brush abBrush = brush with
                     {
                         Thickness = c.MeleeAbilityThickness
                     };
@@ -151,8 +145,8 @@ namespace Resonant
 
         public bool regionContains(Region region, Vector3 pos)
         {
-            var range = Maths.DistanceXZ(GameObject.Position, pos);
-            var angle = Maths.AngleXZ(GameObject.Position, pos) - GameObject.Rotation;
+            float range = Maths.DistanceXZ(GameObject.Position, pos);
+            float angle = Maths.AngleXZ(GameObject.Position, pos) - GameObject.Rotation;
 
             return
                 region.Radius.Inner < range && range < region.Radius.Outer &&

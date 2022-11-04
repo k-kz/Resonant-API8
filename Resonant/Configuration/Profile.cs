@@ -20,7 +20,17 @@ namespace Resonant
             public Vector4 OutlineColor = ColorPresets.Black;
             public bool UseTargetY = true;
             public bool ShowTargetDeltaY = true;
-        };
+
+            public HitboxSettings(bool enabled, Vector4 color, bool outline, Vector4 outlineColor, bool useTargetY, bool showTargetDeltaY)
+            {
+                Enabled = enabled;
+                Color = color;
+                Outline = outline;
+                OutlineColor = outlineColor;
+                UseTargetY = useTargetY;
+                ShowTargetDeltaY = showTargetDeltaY;
+            }
+        }
         public HitboxSettings Hitbox = new();
 
         public struct RingSettings
@@ -28,7 +38,14 @@ namespace Resonant
             public bool Enabled = false;
             public float Radius = 5f;
             public Brush Brush = new(ColorPresets.Green, 1);
-        };
+
+            public RingSettings(bool enabled, float radius, Brush brush)
+            {
+                Enabled = enabled;
+                Radius = radius;
+                Brush = brush;
+            }
+        }
         public RingSettings TargetRing = new();
         public RingSettings PlayerRing = new();
 
@@ -38,6 +55,14 @@ namespace Resonant
             public float Radius = 7f;
             public int Angle = 90;
             public Brush Brush = new(ColorPresets.Blurple, 3);
+
+            public ConeSettings(bool enabled, float radius, int angle, Brush brush)
+            {
+                Enabled = enabled;
+                Radius = radius;
+                Angle = angle;
+                Brush = brush;
+            }
         }
         public ConeSettings Cone = new();
 
@@ -62,9 +87,27 @@ namespace Resonant
             public bool ArrowEnabled = true;
             public float ArrowScale = 1f;
 
-            public Brush BrushFront { get { return new(ColorFront, Thickness); } }
-            public Brush BrushRear { get { return new(ColorRear, Thickness); } }
-            public Brush BrushFlank { get { return new(ColorFlank, Thickness); } }
+            public PositionalsSettings(bool enabled, bool meleeAbilityRange, int meleeAbilityThickness, int thickness, Vector4 colorFront, bool frontSeparate, Vector4 colorRear, bool rearSeparate, Vector4 colorFlank, FlankRegionSetting flankType, bool highlightCurrentRegion, float highlightTransparencyMultiplier, bool arrowEnabled, float arrowScale)
+            {
+                Enabled = enabled;
+                MeleeAbilityRange = meleeAbilityRange;
+                MeleeAbilityThickness = meleeAbilityThickness;
+                Thickness = thickness;
+                ColorFront = colorFront;
+                FrontSeparate = frontSeparate;
+                ColorRear = colorRear;
+                RearSeparate = rearSeparate;
+                ColorFlank = colorFlank;
+                FlankType = flankType;
+                HighlightCurrentRegion = highlightCurrentRegion;
+                HighlightTransparencyMultiplier = highlightTransparencyMultiplier;
+                ArrowEnabled = arrowEnabled;
+                ArrowScale = arrowScale;
+            }
+
+            public Brush BrushFront => new(ColorFront, Thickness);
+            public Brush BrushRear => new(ColorRear, Thickness);
+            public Brush BrushFlank => new(ColorFlank, Thickness);
         }
         public PositionalsSettings Positionals = new();
 
@@ -75,10 +118,7 @@ namespace Resonant
             ID = Guid.NewGuid();
         }
 
-        public override string ToString()
-        {
-            return JsonConvert.SerializeObject(this);
-        }
+        public override string ToString() => JsonConvert.SerializeObject(this);
     }
 
     internal static class ColorPresets
@@ -91,29 +131,22 @@ namespace Resonant
         public static readonly Vector4 Magenta = new(0.92f, 0.05f, 0.829f, 1.0f);
     }
 
-    // todo: better name
+    // TODO: Better name
     public enum FlankRegionSetting
     {
-        Full, // draw the full 90deg
-        RearOnly, // only draw rear 45deg
-        FullSeparated, // draw the full 90deg, but separate the regions
+        Full,           // Draw the full  90deg
+        RearOnly,       // Only draw rear 45deg
+        FullSeparated,  // Draw the full  90deg, but separate the regions
     }
 
     internal static class FlankRegionSettingExtension
     {
-        public static String Description(this FlankRegionSetting setting)
+        public static string Description(this FlankRegionSetting setting) => setting switch
         {
-            switch (setting)
-            {
-                case FlankRegionSetting.Full:
-                    return "Full (90 degrees)";
-                case FlankRegionSetting.RearOnly:
-                    return "Rear Only (45 degrees)";
-                case FlankRegionSetting.FullSeparated:
-                    return "Separated (90 degrees, separated)";
-                default:
-                    return "error - unknown setting";
-            }
-        }
+            FlankRegionSetting.Full => "Full (90 degrees)",
+            FlankRegionSetting.RearOnly => "Rear Only (45 degrees)",
+            FlankRegionSetting.FullSeparated => "Separated (90 degrees, separated)",
+            _ => "error - unknown setting",
+        };
     }
 }

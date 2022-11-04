@@ -9,12 +9,11 @@ namespace Resonant
         ClientState ClientState { get; }
         DataManager DataManager { get; }
 
-        // todo: use enum value from Lumina instead of string abbreviation
+        // TODO: Use enum value from Lumina instead of string abbreviation
         string? CurrentJobAbbrev;
 
-        public event EventHandler<string> JobChangedEvent;
+        public event EventHandler<string>? JobChangedEvent;
 
-        // todo: figure out why c# is giving a warning about non-nullable event
         internal GameStateObserver(ClientState clientState, DataManager dataManager)
         {
             ClientState = clientState;
@@ -25,7 +24,7 @@ namespace Resonant
 
         internal void Observe()
         {
-            var observedClassJob = CurrentJob();
+            string? observedClassJob = CurrentJob();
 
             if (observedClassJob != CurrentJobAbbrev) {
                 CurrentJobAbbrev = observedClassJob;
@@ -33,9 +32,6 @@ namespace Resonant
             }
         }
 
-        private string CurrentJob()
-        {
-            return ClientState.LocalPlayer?.ClassJob.GameData?.Abbreviation ?? "UNKNOWN";
-        }
+        private string CurrentJob() => ClientState.LocalPlayer?.ClassJob.GameData?.Abbreviation ?? "UNKNOWN";
     }
 }

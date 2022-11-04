@@ -16,13 +16,17 @@ namespace Resonant
 
         public struct WindowBoxSettings
         {
-            // relative to the viewport's topleft/bottomright
+            // Relative to the viewport's topleft/bottomright
             public Vector2 TopLeft = new(0, 0);
             public Vector2 BottomRight = new(0, 0);
-            public Vector2 SizeWith(Vector2 viewportSize)
+
+            public WindowBoxSettings(Vector2 topLeft, Vector2 bottomRight)
             {
-                return viewportSize - TopLeft - BottomRight;
+                TopLeft = topLeft;
+                BottomRight = bottomRight;
             }
+
+            public Vector2 SizeWith(Vector2 viewportSize) => viewportSize - TopLeft - BottomRight;
         }
         public WindowBoxSettings ViewportWindowBox = new();
 
@@ -34,28 +38,21 @@ namespace Resonant
 
         internal ConfigurationProfile Active
         {
-            get
-            {
-                return Profiles.Find(p => p.ID == ActiveProfileID)
+            get => Profiles.Find(p => p.ID == ActiveProfileID)
                     ?? Profiles.FirstOrDefault()
                     ?? FillDefaultProfile();
-            }
-            set {
-                ActiveProfileID = value.ID;
-            }
+
+            set => ActiveProfileID = value.ID;
         }
 
         internal ConfigurationProfile FillDefaultProfile()
         {
-            var profile = new ConfigurationProfile("Default");
+            ConfigurationProfile? profile = new("Default");
             Profiles.Add(profile);
             Active = profile;
             return profile;
         }
 
-        internal ConfigurationProfile? ProfileForClassJob(string classJobAbbreviation)
-        {
-            return Profiles.Find((p) => p.Jobs.Contains(classJobAbbreviation));
-        }
+        internal ConfigurationProfile? ProfileForClassJob(string classJobAbbreviation) => Profiles.Find((p) => p.Jobs.Contains(classJobAbbreviation));
     }
 }

@@ -2,8 +2,11 @@
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.Enums;
 using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Objects.SubKinds;
 using Dalamud.Game.Gui;
 using Dalamud.Logging;
+using System.Numerics;
+using System.Collections.Generic;
 using ImGuiNET;
 using System;
 
@@ -14,16 +17,13 @@ namespace Resonant
         private const float RangeAutoAttack = 2.1f;
         private const float RangeAbilityMelee = 3f;
 
-        private ConfigurationManager ConfigManager;
-        private ClientState ClientState;
-        private GameGui Gui;
-        private Canvas Canvas;
-        private GameStateObserver GameStateObserver;
+        private readonly ConfigurationManager ConfigManager;
+        private readonly ClientState ClientState;
+        private readonly GameGui Gui;
+        private readonly Canvas Canvas;
+        private readonly GameStateObserver GameStateObserver;
 
-        private ConfigurationProfile Profile
-        {
-            get { return ConfigManager.Config.Active; }
-        }
+        private ConfigurationProfile Profile => ConfigManager.Config.Active;
 
         public ResonantCore(ConfigurationManager configManager, ClientState clientState, GameGui gui, DataManager dataManager)
         {
@@ -36,16 +36,13 @@ namespace Resonant
             Initialize();
         }
 
-        internal void Initialize()
-        {
-            GameStateObserver.JobChangedEvent += OnJobChange;
-        }
+        internal void Initialize() => GameStateObserver.JobChangedEvent += OnJobChange;
 
         public void Draw()
         {
             GameStateObserver.Observe();
 
-            var player = ClientState.LocalPlayer;
+            PlayerCharacter? player = ClientState.LocalPlayer;
             if (player == null)
             {
                 return;
@@ -84,8 +81,8 @@ namespace Resonant
 
         private void DrawHitbox(Character player)
         {
-            var pos = player.Position;
-            var c = Profile.Hitbox;
+            Vector3 pos = player.Position;
+            ConfigurationProfile.HitboxSettings c = Profile.Hitbox;
 
             if (c.UseTargetY && player.TargetObject != null)
             {
@@ -103,16 +100,16 @@ namespace Resonant
 
         private void DrawPlayerRing(Character player)
         {
-            var c = Profile.PlayerRing;
+            ConfigurationProfile.RingSettings c = Profile.PlayerRing;
             Canvas.CircleXZ(player.Position, c.Radius, c.Brush);
         }
 
         private void DrawPlayerCone(Character player)
         {
-            // rotate arc towards target (if exists)
-            var c = Profile.Cone;
-            var target = player.TargetObject;
-            var rotation = target != null
+            // Rotate arc towards target (if it exists)
+            ConfigurationProfile.ConeSettings c = Profile.Cone;
+            GameObject? target = player.TargetObject;
+            double rotation = target != null
                 ? Math.Atan2(target.Position.X - player.Position.X, target.Position.Z - player.Position.Z)
                 : player.Rotation;
 
@@ -129,25 +126,24 @@ namespace Resonant
 
         private void DrawPositionals(Character player)
         {
-            var c = Profile.Positionals;
-            var target = player.TargetObject;
+            ConfigurationProfile.PositionalsSettings c = Profile.Positionals;
+            GameObject? target = player.TargetObject;
 
-            // don't draw positionals if not targeting a battle mob
+            // Don't draw positionals if not targeting a battle NPC
             if (target == null || target.ObjectKind != ObjectKind.BattleNpc)
             {
                 return;
             }
 
-            // annoyingly, the hitbox size changes on mounts. maybe detect and hardcode, its a slight annoyance in the world
-            var playerHitbox = player.HitboxRadius;
+            // Annoyingly, the hitbox size changes on mounts. Maybe detect and hardcode, its a slight annoyance in the world.
+            float playerHitbox = player.HitboxRadius;
 
-            // for an ability to be in range, the character's hitbox (plus the
-            // range of the attack) has to overlap with the target's hitbox
-            var hitboxes = playerHitbox + target.HitboxRadius;
-            var melee = hitboxes + RangeAutoAttack; // XXX: is this fully accurate? is there a real analysis around this value?
-            var ability = hitboxes + RangeAbilityMelee;
+            // For an ability to be in range, the character's hitbox (plus the range of the attack) has to overlap with the target's hitbox
+            float hitboxes = playerHitbox + target.HitboxRadius;
+            float melee = hitboxes + RangeAutoAttack;               // XXX: Is this fully accurate? Is there a real analysis around this value?
+            float ability = hitboxes + RangeAbilityMelee;
 
-            var regionBrushes = Regions.FromConfig(c, melee, ability);
+            List<(Region Region, Brush Brush)>? regionBrushes = Regions.FromConfig(c, melee, ability);
 
             if (c.ArrowEnabled)
             {
@@ -155,7 +151,7 @@ namespace Resonant
             }
 
             // TODO: If the target doesn't need positionals then don't draw sectors
-            foreach (var (region, brush) in regionBrushes)
+            foreach ((Region region, Brush brush) in regionBrushes)
             {
                 Canvas.ActorDonutSliceXZ(
                     target,
@@ -169,12 +165,12 @@ namespace Resonant
 
             if (c.HighlightCurrentRegion)
             {
-                var targetActor = new Actor(target);
-                foreach (var (region, brush) in regionBrushes)
+                Actor targetActor = new(target);
+                foreach ((Region region, Brush brush) in regionBrushes)
                 {
                     if (targetActor.regionContains(region, player.Position))
                     {
-                        var fillBrush = brush with
+                        Brush fillBrush = brush with
                         {
                             Fill = brush.Color with
                             {
@@ -196,11 +192,11 @@ namespace Resonant
 
         private void DrawEnemyArrow(GameObject target, float angle, float pointRadius)
         {
-            var c = Profile.Positionals;
+            ConfigurationProfile.PositionalsSettings c = Profile.Positionals;
             Canvas.ActorArrowXZ(target, pointRadius, angle, c.ArrowScale, c.BrushFront);
         }
 
-        internal void Debug(String message, params object[] values)
+        internal void Debug(string message, params object[] values)
         {
             if (ConfigManager.Config.Debug)
             {
@@ -208,11 +204,11 @@ namespace Resonant
             }
         }
 
-        private void OnJobChange(object sender, string classJobAbbrev)
+        private void OnJobChange(object? sender, string classJobAbbrev)
         {
-            Dalamud.Logging.PluginLog.Log($"Detected class change: {classJobAbbrev}");
+            PluginLog.Log($"Detected class change: {classJobAbbrev}");
 
-            var profile = ConfigManager.Config.ProfileForClassJob(classJobAbbrev);
+            ConfigurationProfile? profile = ConfigManager.Config.ProfileForClassJob(classJobAbbrev);
             if (profile != null) {
                 ConfigManager.Config.Active = profile;
             }

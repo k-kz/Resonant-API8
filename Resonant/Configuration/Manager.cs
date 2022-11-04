@@ -7,14 +7,14 @@ namespace Resonant
 {
     public class ConfigurationManager
     {
-        DalamudPluginInterface DalamudInterface;
+        readonly DalamudPluginInterface DalamudInterface;
 
         internal Configuration Config;
 
         internal bool ConfigUIVisible = false;
         internal bool ViewportUIVisible = false;
 
-        internal bool DebugUIVisible { get { return Config.Debug; } }
+        internal bool DebugUIVisible => Config.Debug;
 
         internal ConfigurationProfile ActiveProfile {
             get { return Config.Active; }
@@ -27,14 +27,8 @@ namespace Resonant
             Config = GetSavedConfig();
         }
 
-        public Configuration GetSavedConfig()
-        {
-            return DalamudInterface.GetPluginConfig() as Configuration ?? new Configuration();
-        }
+        public Configuration GetSavedConfig() => DalamudInterface.GetPluginConfig() as Configuration ?? new Configuration();
 
-        public void Save()
-        {
-            DalamudInterface.SavePluginConfig(Config);
-        }
+        public void Save() => DalamudInterface.SavePluginConfig(Config);
     }
 }

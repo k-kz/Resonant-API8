@@ -1,10 +1,10 @@
-﻿name: Resonant
-author: Aulus mal Asina
-punchline: A power worthy of Lord Zenos
+﻿name: Resonant-API7
+author: Aulus mal Asina, k-kz
+punchline: Displays accurate player hitbox and positional outlines. Updated for API7 by k-kz.
 description: |-
-  Displays accurate player hitbox and positional outlines.
+  Displays accurate player hitbox and positional outlines. Updated for API7 by k-kz.
 tags:
  - combat
-repo_url: https://github.com/aulus-asina/resonant
-icon_url: https://raw.githubusercontent.com/aulus-asina/resonant/main/repo/resonant.png
-dalamud_api_level: 5
+repo_url: https://github.com/k-kz/Resonant-API7
+icon_url: https://raw.githubusercontent.com/k-kz/Resonant-API7/main/repo/resonant.png
+dalamud_api_level: 7

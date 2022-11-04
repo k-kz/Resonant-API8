@@ -13,13 +13,13 @@ namespace Resonant
     class ConfigurationUI : IDrawable
     {
         ConfigurationManager ConfigManager { get; }
-        Configuration Config { get { return ConfigManager.Config; } }
-        ConfigurationProfile Profile { get { return ConfigManager.ActiveProfile; } }
-        List<ConfigurationProfile> Profiles { get { return ConfigManager.Config.Profiles; } }
+        Configuration Config => ConfigManager.Config;
+        ConfigurationProfile Profile => ConfigManager.ActiveProfile;
+        List<ConfigurationProfile> Profiles => ConfigManager.Config.Profiles;
 
         DataManager DataManager { get; }
 
-        private byte[] PromptProfileName = new byte[512];
+        private readonly byte[] PromptProfileName = new byte[512];
 
         public ConfigurationUI(ConfigurationManager configManager, DataManager dataManager)
         {
@@ -191,7 +191,7 @@ namespace Resonant
         {
             if (ImGui.Button("New Profile"))
             {
-                var profile = new ConfigurationProfile("New Profile");
+                ConfigurationProfile? profile = new("New Profile");
                 Profiles.Add(profile);
                 ConfigManager.Config.Active = profile;
             }
@@ -208,7 +208,7 @@ namespace Resonant
 
             if (ImGui.BeginCombo("Current Profile", ConfigManager.Config.Active.Name))
             {
-                foreach (var profile in ConfigManager.Config.Profiles)
+                foreach (ConfigurationProfile? profile in ConfigManager.Config.Profiles)
                 {
                     if (ImGui.Selectable($"{profile.Name}##{profile.ID}"))
                     {
@@ -230,7 +230,7 @@ namespace Resonant
             }
 
             ImGui.Text("Use profile for jobs:");
-            foreach (var (classJob, index) in GetCombatClassJobs().Select((job, ndx) => (job, ndx)))
+            foreach ((ClassJob classJob, int index) in GetCombatClassJobs().Select((job, ndx) => (job, ndx)))
             {
                 // todo: combine pre-job classes with the job like GLA/PLD and MRD/WAR
                 // special case: ACN->SMN (not SCH)
@@ -239,12 +239,12 @@ namespace Resonant
                     ImGui.SameLine();
                 }
 
-                var isChecked = ConfigManager.ActiveProfile.Jobs.Contains(classJob.Abbreviation);
-                var assignedProfile = ConfigManager.Config.ProfileForClassJob(classJob.Abbreviation);
+                bool isChecked = ConfigManager.ActiveProfile.Jobs.Contains(classJob.Abbreviation);
+                ConfigurationProfile? assignedProfile = ConfigManager.Config.ProfileForClassJob(classJob.Abbreviation);
 
                 if (assignedProfile != null && assignedProfile != Profile)
                 {
-                    var unchanging = false;
+                    bool unchanging = false;
                     ImGui.PushStyleVar(ImGuiStyleVar.Alpha, 0.5f);
                     ImGui.Checkbox(classJob.Abbreviation, ref unchanging);
                     ImGui.PopStyleVar();
@@ -276,10 +276,7 @@ namespace Resonant
             Encoding.UTF8.GetBytes(name, 0, name.Length, PromptProfileName, 0);
         }
 
-        void TabDebug()
-        {
-            ImGui.Checkbox("Debug", ref ConfigManager.Config.Debug);
-        }
+        void TabDebug() => ImGui.Checkbox("Debug", ref ConfigManager.Config.Debug);
 
         void DrawViewportConfigWindow()
         {
@@ -288,8 +285,8 @@ namespace Resonant
                 return;
             }
 
-            var displaySize = ImGui.GetIO().DisplaySize;
-            var windowSize = Config.ViewportWindowBox.SizeWith(displaySize);
+            Vector2 displaySize = ImGui.GetIO().DisplaySize;
+            Vector2 windowSize = Config.ViewportWindowBox.SizeWith(displaySize);
 
             ImGui.SetNextWindowPos(Config.ViewportWindowBox.TopLeft, ImGuiCond.Appearing);
             ImGui.SetNextWindowSize(windowSize, ImGuiCond.Always);
@@ -339,26 +336,23 @@ namespace Resonant
         }
 
         // decorators to put label on preceding line
-        void DragFloat(string label, ref float v, float v_speed, float v_min, float v_max)
+        static void DragFloat(string label, ref float v, float v_speed, float v_min, float v_max)
         {
             ImGui.Text(Regex.Replace(label, "##\\w+", ""));
             ImGui.DragFloat($"##{label}", ref v, v_speed, v_min, v_max);
         }
 
-        void DragInt(string label, ref int v, int v_speed, int v_min, int v_max)
+        static void DragInt(string label, ref int v, int v_speed, int v_min, int v_max)
         {
             ImGui.Text(Regex.Replace(label, "##\\w+", ""));
             ImGui.DragInt($"##{label}", ref v, v_speed, v_min, v_max);
         }
 
-        List<ClassJob> GetCombatClassJobs()
-        {
-            return DataManager
+        List<ClassJob> GetCombatClassJobs() => DataManager
                 .GetExcelSheet<ClassJob>()!
                 .Where(
                     (j) => j.Role != 0
                 )
                 .ToList();
-        }
     }
 }

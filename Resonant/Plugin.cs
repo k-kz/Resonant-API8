@@ -69,14 +69,8 @@ namespace Resonant
             DebugUI.Draw();
         }
 
-        internal void HandleSlashCommand(string command, string args)
-        {
-            ConfigManager.ConfigUIVisible = !ConfigManager.ConfigUIVisible;
-        }
+        internal void HandleSlashCommand(string command, string args) => ConfigManager.ConfigUIVisible = !ConfigManager.ConfigUIVisible;
 
-        public void Dispose()
-        {
-            CommandManager.RemoveHandler("/resonant");
-        }
+        public void Dispose() => CommandManager.RemoveHandler("/resonant");
     }
 }

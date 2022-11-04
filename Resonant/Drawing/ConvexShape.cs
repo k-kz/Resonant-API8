@@ -27,26 +27,23 @@ namespace Resonant
             // TODO: implement proper clipping. everything goes crazy when
             // drawing lines outside the clip window and behind the camera
             // point
-            var visible = Gui.WorldToScreen(worldPos, out Vector2 pos);
+            bool visible = Gui.WorldToScreen(worldPos, out Vector2 pos);
             DrawList.PathLineTo(pos);
             if (visible) { cullObject = false; }
         }
 
-        internal void PointRadial(Vector3 center, float radius, float radians)
-        {
-            Point(new Vector3(
+        internal void PointRadial(Vector3 center, float radius, float radians) => Point(new Vector3(
                 center.X + (radius * (float)Math.Sin(radians)),
                 center.Y,
                 center.Z + (radius * (float)Math.Cos(radians))
             ));
-        }
 
         internal void Arc(Vector3 center, float radius, float startRads, float endRads)
         {
             int segments = Maths.ArcSegments(startRads, endRads);
-            var deltaRads = (endRads - startRads) / segments;
+            float deltaRads = (endRads - startRads) / segments;
 
-            for (var i = 0; i < segments + 1; i++)
+            for (int i = 0; i < segments + 1; i++)
             {
                 PointRadial(center, radius, startRads + (deltaRads * i));
             }
