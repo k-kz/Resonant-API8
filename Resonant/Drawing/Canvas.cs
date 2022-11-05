@@ -39,7 +39,7 @@ namespace Resonant
             ImGui.PushStyleVar(ImGuiStyleVar.WindowPadding, new Vector2(0, 0));
             ImGuiHelpers.ForceNextWindowMainViewport();
             ImGuiHelpers.SetNextWindowPosRelativeMainViewport(Config.ViewportWindowBox.TopLeft);
-            ImGui.Begin("ResonantOverlay",
+            _ = ImGui.Begin("ResonantOverlay",
                 ImGuiWindowFlags.NoInputs | ImGuiWindowFlags.NoNav | ImGuiWindowFlags.NoTitleBar |
                 ImGuiWindowFlags.NoScrollbar | ImGuiWindowFlags.NoBackground);
 
@@ -48,7 +48,8 @@ namespace Resonant
         }
 
         // ----------- Actor-aware draw methods --------------
-        internal void ActorConeXZ(GameObject actor, float radius, float startRads, float endRads, Brush brush) => ConeXZ(actor.Position, radius, startRads + actor.Rotation, endRads + actor.Rotation, brush);
+        internal void ActorConeXZ(GameObject actor, float radius, float startRads, float endRads, Brush brush) =>
+            ConeXZ(actor.Position, radius, startRads + actor.Rotation, endRads + actor.Rotation, brush);
 
         internal void ActorArrowXZ(GameObject actor, float radius, float angle, float scale, Brush brush)
         {
@@ -56,11 +57,7 @@ namespace Resonant
 
             // Scale the drawing by shifting the "circle center" up the radial and reducing the radius accordingly
             float centerOffset = radius * (1 - scale);
-            Vector3 pos = actor.Position + new Vector3(
-                centerOffset * (float)Math.Sin(direction),
-                0,
-                centerOffset * (float)Math.Cos(direction)
-            );
+            Vector3 pos = actor.Position + new Vector3(centerOffset * (float)Math.Sin(direction), 0, centerOffset * (float)Math.Cos(direction));
             float arrowSize = radius - centerOffset;
 
             // Edge case: when == 1 and there is a thickness, the arrow pokes out the sides.
@@ -74,7 +71,8 @@ namespace Resonant
             shape.Done();
         }
 
-        internal void ActorDonutSliceXZ(GameObject actor, float innerRadius, float outerRadius, float startRads, float endRads, Brush brush) => DonutSliceXZ(actor.Position, innerRadius, outerRadius, startRads + actor.Rotation, endRads + actor.Rotation, brush);
+        internal void ActorDonutSliceXZ(GameObject actor, float innerRadius, float outerRadius, float startRads, float endRads, Brush brush) =>
+            DonutSliceXZ(actor.Position, innerRadius, outerRadius, startRads + actor.Rotation, endRads + actor.Rotation, brush);
 
         internal void CircleXZ(Vector3 position, float radius, Brush brush) => CircleArcXZ(position, radius, 0f, Maths.TAU, brush);
 
@@ -99,7 +97,7 @@ namespace Resonant
 
             // A donut slice is a non-convex object so is not cleanly handled by imgui instead, approximate with slices
             int segments = Maths.ArcSegments(startRads, endRads);
-            float radsPerSegment = (endRads - startRads) / (float)segments;
+            float radsPerSegment = (endRads - startRads) / segments;
 
             // Outline
             Brush outlineBrush = brush with { Fill = new() };
@@ -115,8 +113,8 @@ namespace Resonant
                 Brush sliceBrush = brush with { Thickness = 0f };
                 for (int i = 0; i < segments; i++)
                 {
-                    float start = startRads + i * radsPerSegment;
-                    float end = startRads + (i + 1) * radsPerSegment;
+                    float start = startRads + (i * radsPerSegment);
+                    float end   = startRads + ((i + 1) * radsPerSegment);
 
                     ConvexShape? shape = new(Gui, sliceBrush);
                     shape.Arc(center, outerRadius, start, end);
@@ -130,7 +128,7 @@ namespace Resonant
         internal void ConeCenteredXZ(Vector3 center, float radius, float directionRads, float angleRads, Brush brush)
         {
             float startRads = directionRads - (angleRads / 2);
-            float endRads = directionRads + (angleRads / 2);
+            float endRads   = directionRads + (angleRads / 2);
 
             ConeXZ(center, radius, startRads, endRads, brush);
         }

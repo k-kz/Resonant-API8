@@ -5,6 +5,7 @@ description: |-
   Displays accurate player hitbox and positional outlines. Updated for API7 by k-kz.
 tags:
  - combat
+ - positional
 repo_url: https://github.com/k-kz/Resonant-API7
 icon_url: https://raw.githubusercontent.com/k-kz/Resonant-API7/main/repo/resonant.png
 dalamud_api_level: 7

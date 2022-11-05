@@ -168,7 +168,7 @@ namespace Resonant
                 Actor targetActor = new(target);
                 foreach ((Region region, Brush brush) in regionBrushes)
                 {
-                    if (targetActor.regionContains(region, player.Position))
+                    if (targetActor.RegionContains(region, player.Position))
                     {
                         Brush fillBrush = brush with
                         {

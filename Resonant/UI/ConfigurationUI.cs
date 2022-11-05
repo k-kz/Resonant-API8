@@ -47,19 +47,21 @@ namespace Resonant
                 {
                     ConfigManager.Save();
                 }
+
                 ImGui.SameLine();
                 if (ImGui.Button("Close"))
                 {
                     ConfigManager.ConfigUIVisible = false;
                 }
+
                 ImGui.SameLine();
                 if (ImGui.Button("Configure Draw Window"))
                 {
                     ConfigManager.ViewportUIVisible = !ConfigManager.ViewportUIVisible;
                 }
 
-                // todo: cancel button that restores from pluginConfiguration
-                // todo: reset to defaults button
+                // TODO: Cancel button that restores from pluginConfiguration
+                // TODO: Reset to defaults button
 
                 ImGui.BeginTabBar("##tabs");
 
@@ -156,6 +158,7 @@ namespace Resonant
                             Profile.Positionals.FlankType = setting;
                         }
                     }
+
                     ImGui.EndCombo();
                 }
 
@@ -184,7 +187,6 @@ namespace Resonant
                 DragFloat("Target Thickness", ref Profile.TargetRing.Brush.Thickness, 1, 1, 50);
                 ImGui.ColorEdit4("Target color", ref Profile.TargetRing.Brush.Color, ImGuiColorEditFlags.NoInputs);
             }
-
         }
 
         void TabProfile()
@@ -216,12 +218,13 @@ namespace Resonant
                         SetProfileNamePrompt(profile.Name);
                     }
                 }
+
                 ImGui.EndCombo();
             }
 
             if (ImGui.InputText("Profile Name", PromptProfileName, (uint)PromptProfileName.Length))
             {
-                // update current profile name
+                // Update current profile name
                 Profile.Name = Encoding.Default.GetString(PromptProfileName);
             }
             else
@@ -232,9 +235,9 @@ namespace Resonant
             ImGui.Text("Use profile for jobs:");
             foreach ((ClassJob classJob, int index) in GetCombatClassJobs().Select((job, ndx) => (job, ndx)))
             {
-                // todo: combine pre-job classes with the job like GLA/PLD and MRD/WAR
-                // special case: ACN->SMN (not SCH)
-                if ((index) % 3 != 0)
+                // TODO: Combine pre-job classes with the job like GLA/PLD and MRD/WAR
+                // Special case: ACN->SMN (not SCH)
+                if (index % 3 != 0)
                 {
                     ImGui.SameLine();
                 }
@@ -332,10 +335,11 @@ namespace Resonant
                 ImGui.Text($"Current window size: {ImGui.GetWindowSize()}");
 
             }
+
             ImGui.End();
         }
 
-        // decorators to put label on preceding line
+        // Decorators to put label on preceding line
         static void DragFloat(string label, ref float v, float v_speed, float v_min, float v_max)
         {
             ImGui.Text(Regex.Replace(label, "##\\w+", ""));
@@ -350,9 +354,7 @@ namespace Resonant
 
         List<ClassJob> GetCombatClassJobs() => DataManager
                 .GetExcelSheet<ClassJob>()!
-                .Where(
-                    (j) => j.Role != 0
-                )
+                .Where((j) => j.Role != 0)
                 .ToList();
     }
 }

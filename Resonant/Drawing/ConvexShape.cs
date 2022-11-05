@@ -1,12 +1,11 @@
 ﻿using Dalamud.Game.Gui;
-using Dalamud.Logging;
 using ImGuiNET;
 using System;
 using System.Numerics;
 
 namespace Resonant
 {
-    // makes complete shapes using coordinates from in-game space
+    // Makes complete shapes using coordinates from in-game space
     internal class ConvexShape
     {
         internal readonly Brush Brush;
@@ -24,9 +23,7 @@ namespace Resonant
 
         internal void Point(Vector3 worldPos)
         {
-            // TODO: implement proper clipping. everything goes crazy when
-            // drawing lines outside the clip window and behind the camera
-            // point
+            // TODO: Implement proper clipping. Everything goes crazy when drawing lines outside the clip window and behind the camera point
             bool visible = Gui.WorldToScreen(worldPos, out Vector2 pos);
             DrawList.PathLineTo(pos);
             if (visible) { cullObject = false; }
@@ -35,8 +32,7 @@ namespace Resonant
         internal void PointRadial(Vector3 center, float radius, float radians) => Point(new Vector3(
                 center.X + (radius * (float)Math.Sin(radians)),
                 center.Y,
-                center.Z + (radius * (float)Math.Cos(radians))
-            ));
+                center.Z + (radius * (float)Math.Cos(radians))));
 
         internal void Arc(Vector3 center, float radius, float startRads, float endRads)
         {
@@ -65,6 +61,7 @@ namespace Resonant
             {
                 DrawList.PathStroke(ImGui.GetColorU32(Brush.Color), ImDrawFlags.None, Brush.Thickness);
             }
+
             DrawList.PathClear();
         }
     }

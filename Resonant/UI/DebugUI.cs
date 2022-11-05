@@ -56,6 +56,7 @@ namespace Resonant
                     }
                 }
             }
+
             ImGui.End();
         }
 

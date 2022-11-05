@@ -48,37 +48,17 @@ namespace Resonant
         internal static Positional RearLeft = Positional.FromDegrees(135, 180);
         internal static Positional RearRight = Positional.FromDegrees(180, 225);
 
-        internal static List<Positional> FrontPositionals(ConfigurationProfile.PositionalsSettings c)
-        {
-            // todo: make logic cleaner
-            if (c.FlankType == FlankRegionSetting.RearOnly) {
-                if (c.FrontSeparate) {
-                    return new List<Positional> { FrontLeft90, FrontRight90 };
-                } else {
-                    return new List<Positional> { Front180 };
-                }
-            } else {
-                if (c.FrontSeparate) {
-                    return new List<Positional> { FrontLeft45, FrontRight45 };
-                } else {
-                    return new List<Positional> { Front90 };
-                }
-            }
-        }
+        internal static List<Positional> FrontPositionals(ConfigurationProfile.PositionalsSettings c) =>
+            c.FlankType == FlankRegionSetting.RearOnly
+                ? c.FrontSeparate ? new List<Positional> { FrontLeft90, FrontRight90 } : new List<Positional> { Front180 }
+                : c.FrontSeparate ? new List<Positional> { FrontLeft45, FrontRight45 } : new List<Positional> { Front90 };
 
-        internal static List<Positional> FlankPositionals(ConfigurationProfile.PositionalsSettings c)
+        internal static List<Positional> FlankPositionals(ConfigurationProfile.PositionalsSettings c) => c.FlankType switch
         {
-            switch (c.FlankType)
-            {
-                case FlankRegionSetting.Full:
-                    return new List<Positional> { FlankLeft90, FlankRight90 };
-                case FlankRegionSetting.FullSeparated:
-                    return new List<Positional> { FlankLeftFront, FlankLeftRear, FlankRightFront, FlankRightRear };
-                case FlankRegionSetting.RearOnly:
-                default:
-                    return new List<Positional> { FlankLeftRear, FlankRightRear };
-            }
-        }
+            FlankRegionSetting.Full => new List<Positional> { FlankLeft90, FlankRight90 },
+            FlankRegionSetting.FullSeparated => new List<Positional> { FlankLeftFront, FlankLeftRear, FlankRightFront, FlankRightRear },
+            _ => new List<Positional> { FlankLeftRear, FlankRightRear },
+        };
 
         internal static List<Positional> RearPositionals(ConfigurationProfile.PositionalsSettings c) => c.RearSeparate
                 ? new List<Positional> { RearLeft, RearRight }
@@ -89,23 +69,11 @@ namespace Resonant
             List<(Positional, Brush)> positionals = new();
 
             FrontPositionals(c)
-                .ForEach(p =>
-                {
-                    positionals.Add((p, c.BrushFront));
-                });
-
+                .ForEach(p => positionals.Add((p, c.BrushFront)));
             FlankPositionals(c)
-                .ForEach(p =>
-                {
-                    positionals.Add((p, c.BrushFlank));
-                });
-
+                .ForEach(p => positionals.Add((p, c.BrushFlank)));
             RearPositionals(c)
-                .ForEach(p =>
-                {
-                    positionals.Add((p, c.BrushRear));
-                });
-
+                .ForEach(p => positionals.Add((p, c.BrushRear)));
             return positionals;
         }
     }
@@ -138,12 +106,9 @@ namespace Resonant
     internal struct Actor
     {
         internal GameObject GameObject;
-        public Actor(GameObject gameObject)
-        {
-            GameObject = gameObject;
-        }
+        public Actor(GameObject gameObject) => GameObject = gameObject;
 
-        public bool regionContains(Region region, Vector3 pos)
+        public bool RegionContains(Region region, Vector3 pos)
         {
             float range = Maths.DistanceXZ(GameObject.Position, pos);
             float angle = Maths.AngleXZ(GameObject.Position, pos) - GameObject.Rotation;

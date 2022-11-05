@@ -4,7 +4,6 @@ using Dalamud.Game.Command;
 using Dalamud.Game.Gui;
 using Dalamud.IoC;
 using Dalamud.Plugin;
-using System;
 
 namespace Resonant
 {
@@ -50,12 +49,9 @@ namespace Resonant
 
             DalamudInterface.UiBuilder.Draw += Draw;
 
-            DalamudInterface.UiBuilder.OpenConfigUi += () =>
-            {
-                ConfigManager.ConfigUIVisible = true;
-            };
+            DalamudInterface.UiBuilder.OpenConfigUi += () => ConfigManager.ConfigUIVisible = true;
 
-            // hack: show config by default if debug is enabled
+            // Hack: show config by default if debug is enabled
             if (ConfigManager.DebugUIVisible)
             {
                 ConfigManager.ConfigUIVisible = true;

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Resonant
+﻿namespace Resonant
 {
     interface IDrawable
     {

@@ -1,7 +1,4 @@
-﻿using Dalamud.Configuration;
-using Dalamud.Plugin;
-using System;
-using System.Collections.Generic;
+﻿using Dalamud.Plugin;
 
 namespace Resonant
 {
@@ -17,8 +14,8 @@ namespace Resonant
         internal bool DebugUIVisible => Config.Debug;
 
         internal ConfigurationProfile ActiveProfile {
-            get { return Config.Active; }
-            set { Config.Active = value; }
+            get => Config.Active;
+            set => Config.Active = value;
         }
 
         public ConfigurationManager(DalamudPluginInterface dalamudInterface)
