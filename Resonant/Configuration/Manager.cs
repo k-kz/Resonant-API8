@@ -13,7 +13,8 @@ namespace Resonant
 
         internal bool DebugUIVisible => Config.Debug;
 
-        internal ConfigurationProfile ActiveProfile {
+        internal ConfigurationProfile ActiveProfile
+        {
             get => Config.Active;
             set => Config.Active = value;
         }

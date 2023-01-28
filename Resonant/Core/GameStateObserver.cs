@@ -26,7 +26,8 @@ namespace Resonant
         {
             string? observedClassJob = CurrentJob();
 
-            if (observedClassJob != CurrentJobAbbrev) {
+            if (observedClassJob != CurrentJobAbbrev)
+            {
                 CurrentJobAbbrev = observedClassJob;
                 JobChangedEvent?.Invoke(this, observedClassJob);
             }

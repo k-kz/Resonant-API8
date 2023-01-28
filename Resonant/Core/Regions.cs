@@ -1,6 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Numerics;
+using Dalamud.Game.ClientState.Objects.Types;
 
 namespace Resonant
 {

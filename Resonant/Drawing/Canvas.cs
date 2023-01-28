@@ -1,9 +1,9 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using System;
+using System.Numerics;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Gui;
 using Dalamud.Interface;
 using ImGuiNET;
-using System;
-using System.Numerics;
 
 namespace Resonant
 {

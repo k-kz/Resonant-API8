@@ -1,7 +1,7 @@
-﻿using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Numerics;
+using Newtonsoft.Json;
 
 namespace Resonant
 {
@@ -113,7 +113,8 @@ namespace Resonant
 
         public List<string> Jobs = new();
 
-        public ConfigurationProfile(string name) {
+        public ConfigurationProfile(string name)
+        {
             Name = name;
             ID = Guid.NewGuid();
         }

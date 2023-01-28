@@ -1,7 +1,7 @@
-﻿using Dalamud.Game.Gui;
-using ImGuiNET;
-using System;
+﻿using System;
 using System.Numerics;
+using Dalamud.Game.Gui;
+using ImGuiNET;
 
 namespace Resonant
 {

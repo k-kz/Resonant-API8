@@ -1,11 +1,11 @@
-﻿using ImGuiNET;
-using System;
-using System.Numerics;
-using System.Text.RegularExpressions;
-using System.Linq;
-using System.Text;
+﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using System.Text;
+using System.Text.RegularExpressions;
 using Dalamud.Data;
+using ImGuiNET;
 using Lumina.Excel.GeneratedSheets;
 
 namespace Resonant

@@ -1,14 +1,14 @@
-﻿using Dalamud.Data;
+﻿using System;
+using System.Collections.Generic;
+using System.Numerics;
+using Dalamud.Data;
 using Dalamud.Game.ClientState;
 using Dalamud.Game.ClientState.Objects.Enums;
-using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.ClientState.Objects.SubKinds;
+using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Game.Gui;
 using Dalamud.Logging;
-using System.Numerics;
-using System.Collections.Generic;
 using ImGuiNET;
-using System;
 
 namespace Resonant
 {
@@ -209,7 +209,8 @@ namespace Resonant
             PluginLog.Log($"Detected class change: {classJobAbbrev}");
 
             ConfigurationProfile? profile = ConfigManager.Config.ProfileForClassJob(classJobAbbrev);
-            if (profile != null) {
+            if (profile != null)
+            {
                 ConfigManager.Config.Active = profile;
             }
         }
